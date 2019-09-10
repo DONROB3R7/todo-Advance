@@ -31,27 +31,37 @@ class App extends Component {
     };
     const updatedItems = [...this.state.items, newItem];
 
-    this.setState(
-      {
-        items: updatedItems,
-        item: "",
-        id: uuid(),
-        editItem: false
-      },
-      () => console.log(this.state)
-    );
+    this.setState({
+      items: updatedItems,
+      item: "",
+      id: uuid(),
+      editItem: false
+    });
   };
 
   clearList = () => {
-    console.log("Clear list");
+    this.setState({
+      items: []
+    });
   };
 
   handleDelete = id => {
-    console.log(`handle Delete ${id}`);
+    const filteredItems = this.state.items.filter(item => item.id !== id);
+
+    this.setState({
+      items: filteredItems
+    });
   };
 
   handleEdit = id => {
-    console.log(`handle edit ${id}`);
+    const filteredItems = this.state.items.filter(item => item.id !== id);
+    const selectedItem = this.state.items.find(item => item.id === id);
+    this.setState({
+      items: filteredItems,
+      item: selectedItem.title,
+      id: id,
+      editItem: true
+    });
   };
 
   render() {
@@ -68,9 +78,9 @@ class App extends Component {
             />
 
             <TodoList
-              items={this.state.item}
+              item={this.state.items}
               clearList={this.clearList}
-              handleChange={this.handleDelete}
+              handleDelete={this.handleDelete}
               handleEdit={this.handleEdit}
             />
           </div>
